@@ -32,14 +32,16 @@ echo "🧹 Cleaning previous temp / mods folders…"
 rm -rf "$TEMP_DIR" "$MODPACK_DIR/mods"
 mkdir -p "$TEMP_DIR" "$MODPACK_DIR/mods"
 
-# echo "⬇️  Downloading modpack from $MODRINTH_URL…"
-# wget -q -O "$MRPACK_PATH" "$MODRINTH_URL"
-
-echo "📦 Using local modpack: $MRPACK_PATH"
-
-if [ ! -f "$MRPACK_PATH" ]; then
-  echo "❌ ERROR: Modpack file not found at $MRPACK_PATH"
-  exit 1
+## Support both local file and remote URL sources for the .mrpack file, with URL being the priority
+if [ -n "$MODRINTH_URL" ]; then
+  echo "⬇️  Downloading modpack from $MODRINTH_URL…"
+  wget -q -O "$MRPACK_PATH" "$MODRINTH_URL"
+else
+  echo "📦 Using local modpack: $MRPACK_PATH"
+  if [ ! -f "$MRPACK_PATH" ]; then
+    echo "❌ ERROR: Modpack file not found at $MRPACK_PATH"
+    exit 1
+  fi
 fi
 
 echo "📦 Extracting .mrpack…"

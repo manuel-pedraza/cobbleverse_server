@@ -36,4 +36,12 @@ This means you could use `localhost:25565` or `127.0.0.1:localhost`
 
 
 ## NOTES:
-This is a local setup it doesn'd download from [cobbleverse versions](https://modrinth.com/modpack/cobbleverse/versions). It unzip the `./pack.mrpack` and create the server
+This is a local setup it doesn'd download from [cobbleverse versions](https://modrinth.com/modpack/cobbleverse/versions). It unzip the `./pack.mrpack` and create the server OR you can just select the version to download.
+## Select Version URL
+1. In modrinth select which [version](https://cdn.modrinth.com/data/Jkb29YJU/versions/jImAfjVc/COBBLEVERSE%201.7.30.mrpack) to download
+2. Right click the green download button
+3. Copy the link address in the `.env` file
+## Local .mrpack
+If you dont want to download and just want to start the server with the local files follow the next steps.
+1. Export the cobbleverse modpacks into a `.mrpack` file
+2. Copy or put the `.mrpack` file inside the root of the project ` ./` 

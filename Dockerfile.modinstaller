@@ -2,5 +2,8 @@ FROM alpine:latest
 
 RUN apk add --no-cache bash wget unzip jq
 
+## COBBLEVERSE - Pokemon Adventure [Cobblemon] 1.0.0.mrpack
+COPY pack.mrpack /modpack/pack.mrpack
+
 WORKDIR /scripts
 ENTRYPOINT ["/bin/sh"]

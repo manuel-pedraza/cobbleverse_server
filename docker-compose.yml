@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile.modinstaller
     volumes:
       - ./modpack:/modpack
+      - ./pack.mrpack:/modpack/pack.mrpack
       - ./data:/data
       - ./scripts:/scripts
     environment:
@@ -16,12 +17,12 @@ services:
 
 
   mc:
-    image: itzg/minecraft-server
+    image: itzg/minecraft-server:java21
     environment:
       EULA: "true"
       TYPE: "FABRIC"
       VERSION: "1.21.1"
-      FABRIC_LOADER_VERSION: "0.16.10"
+      FABRIC_LOADER_VERSION: "0.17.3"
       FABRIC_LAUNCHER_VERSION: "1.0.3"
       MEMORY: "6G"
       SERVER_WORLDNAME: ${SERVER_WORLDNAME:-MY_COBBLEVERSE_WORLD}
@@ -32,10 +33,12 @@ services:
       ICON: ${SERVER_ICON:-}
       ALLOW_FLIGHT: ${ALLOW_FLIGHT:-False}
       SPAWN_MONSTERS: ${SPAWN_MONSTERS:-False}
+      JAVA_VERSION: 21
 
 
     volumes:
       - ./modpack:/modpack
+      - ./pack.mrpack:/modpack/pack.mrpack
       - ./data:/data
       - ./worlds:/data/worlds
       - ./scripts/wait-for-modpack.sh:/wait-for-modpack.sh

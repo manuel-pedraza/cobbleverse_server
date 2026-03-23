@@ -33,3 +33,7 @@ My recommendation is that you use the [Modrinth App](https://modrinth.com/app). 
 Once in, simply put in the address of your server.  If you're on the same machine, you can use `localhost` or `127.0.0.1`.
 Sometimes you need to specify the port number too.  This server will be utilizing port `25565`.
 This means you could use `localhost:25565` or `127.0.0.1:localhost`
+
+
+## NOTES:
+This is a local setup it doesn'd download from [cobbleverse versions](https://modrinth.com/modpack/cobbleverse/versions). It unzip the `./pack.mrpack` and create the server

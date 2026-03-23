@@ -7,7 +7,7 @@ set -e
 # marks completion with a world‑specific .ready flag.
 # ---------------------------------------------------------------------------
 
-apk add --no-cache jq wget unzip rsync > /dev/null
+apk add --no-cache jq wget unzip rsync moreutils > /dev/null
 
 MODPACK_DIR=/modpack
 TEMP_DIR="$MODPACK_DIR/temp"
@@ -32,8 +32,15 @@ echo "🧹 Cleaning previous temp / mods folders…"
 rm -rf "$TEMP_DIR" "$MODPACK_DIR/mods"
 mkdir -p "$TEMP_DIR" "$MODPACK_DIR/mods"
 
-echo "⬇️  Downloading modpack from $MODRINTH_URL…"
-wget -q -O "$MRPACK_PATH" "$MODRINTH_URL"
+# echo "⬇️  Downloading modpack from $MODRINTH_URL…"
+# wget -q -O "$MRPACK_PATH" "$MODRINTH_URL"
+
+echo "📦 Using local modpack: $MRPACK_PATH"
+
+if [ ! -f "$MRPACK_PATH" ]; then
+  echo "❌ ERROR: Modpack file not found at $MRPACK_PATH"
+  exit 1
+fi
 
 echo "📦 Extracting .mrpack…"
 unzip -q "$MRPACK_PATH" -d "$TEMP_DIR"
@@ -90,10 +97,21 @@ copy_override "$TEMP_DIR/overrides/config"        "$MODPACK_DIR/config"        "
 copy_override "$TEMP_DIR/overrides/resourcepacks" "$MODPACK_DIR/resourcepacks" "resourcepacks"
 
 # Datapacks need special handling so we *never* create a nested datapacks/datapacks
+echo "📁 Handling datapacks override…"
+
+# Case 1: standard structure overrides/datapacks/
 if [ -d "$TEMP_DIR/overrides/datapacks" ]; then
-  echo "📁 Copying datapacks override (flattened)…"
+  echo "   → Found overrides/datapacks/"
   mkdir -p "$MODPACK_DIR/datapacks"
   rsync -a "$TEMP_DIR/overrides/datapacks/" "$MODPACK_DIR/datapacks/"
+
+# Case 2: datapacks dumped directly inside overrides/
+elif find "$TEMP_DIR/overrides" -mindepth 1 -maxdepth 1 -type d | grep -q .; then
+  echo "   → No datapacks folder, assuming overrides/ contains datapacks directly"
+  mkdir -p "$MODPACK_DIR/datapacks"
+  rsync -a "$TEMP_DIR/overrides/" "$MODPACK_DIR/datapacks/"
+else
+  echo "   → No datapacks found in overrides"
 fi
 
 # ---------------------------------------------------------------------------
@@ -109,7 +127,7 @@ flatten_dp() {
 }
 
 # Flatten at source so every downstream copy inherits the fix
-flatten_dp "$MODPACK_DIR"
+[ -d "$MODPACK_DIR/datapacks" ] && flatten_dp "$MODPACK_DIR/datapacks"
 
 # Remove macOS metadata files that pollute logs
 find "$MODPACK_DIR/datapacks" -name '.DS_Store' -delete 2>/dev/null || true

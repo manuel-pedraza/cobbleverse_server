@@ -1,6 +1,7 @@
 
 services:
   mc-modpack-installer:
+    mem_limit: 1G
     user: "0:0"
     build:
       context: .
@@ -15,8 +16,8 @@ services:
       SERVER_WORLDNAME: ${SERVER_WORLDNAME:-MY_COBBLEVERSE_WORLD}
     entrypoint: ["/bin/sh", "/scripts/install-modpack.sh"]
 
-
   mc:
+    mem_limit: 8G
     image: itzg/minecraft-server:java21
     environment:
       EULA: "true"

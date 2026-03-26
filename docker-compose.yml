@@ -1,7 +1,7 @@
 
 services:
   mc-modpack-installer:
-    mem_limit: 1G
+    mem_limit: 512m
     user: "0:0"
     build:
       context: .
@@ -16,9 +16,14 @@ services:
       SERVER_WORLDNAME: ${SERVER_WORLDNAME:-MY_COBBLEVERSE_WORLD}
     entrypoint: ["/bin/sh", "/scripts/install-modpack.sh"]
 
+
   mc:
     mem_limit: 8G
-    image: itzg/minecraft-server:java21
+    build:
+      context: .
+      dockerfile: Dockerfile.mc
+    init: true
+    stop_grace_period: 30s
     environment:
       EULA: "true"
       TYPE: "FABRIC"
@@ -36,17 +41,19 @@ services:
       SPAWN_MONSTERS: ${SPAWN_MONSTERS:-False}
       JAVA_VERSION: 21
 
-
     volumes:
       - ./modpack:/modpack
       - ./pack.mrpack:/modpack/pack.mrpack
       - ./data:/data
       - ./worlds:/data/worlds
       - ./scripts/wait-for-modpack.sh:/wait-for-modpack.sh
+      - ./scripts/server:/server-scripts
+      - ./backup:/backup
     entrypoint: ["/bin/sh", "/wait-for-modpack.sh"]
+
     command: []
     ports:
       - "25565:25565"
     depends_on:
       - mc-modpack-installer
-    restart: unless-stopped
+    restart: on-failure

@@ -1,0 +1,2 @@
+*/15,50,55-59 23 * * * root /bin/bash /server-scripts/say_date.sh >> /var/log/say_date.log 2>&1
+0 0 * * * root kill -TERM 1

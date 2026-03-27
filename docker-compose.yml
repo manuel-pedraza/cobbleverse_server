@@ -25,6 +25,7 @@ services:
     init: true
     stop_grace_period: 30s
     environment:
+      TZ: ${TZ:-UTC}
       EULA: "true"
       TYPE: "FABRIC"
       VERSION: "1.21.1"

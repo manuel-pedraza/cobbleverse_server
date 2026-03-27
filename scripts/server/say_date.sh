@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-export TZ=America/Toronto # TODO: make this configurable
+export TZ="${TZ:-UTC}"
 
 # Current time (epoch)
 now=$(date +%s)

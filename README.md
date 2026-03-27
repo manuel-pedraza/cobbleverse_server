@@ -45,3 +45,6 @@ This is a local setup it doesn'd download from [cobbleverse versions](https://mo
 If you dont want to download and just want to start the server with the local files follow the next steps.
 1. Export the cobbleverse modpacks into a `.mrpack` file
 2. Copy or put the `.mrpack` file inside the root of the project ` ./` 
+## Restore Files
+The backup of the last time the server was shutdown last time will be under the folder /backup.
+Command to extract files(linux): `tar -xzf backup.tar.gz -C /data/{YOUR_SERVER_WORLDNAME}`

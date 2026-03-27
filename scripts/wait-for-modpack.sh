@@ -18,14 +18,23 @@ cleanup() {
         echo "[shutdown] rcon-cli not available"
     fi
 
-    if [ -n "$child" ]; then
-        wait "$child"
-    fi
+    # if [ -n "$child" ]; then
+    #     wait "$child"
+    # fi
 
     echo "[shutdown] Backing up world..."
-    cp -r /data/world /backup/world-$(date +%s) 2>/dev/null
 
-    echo "[shutdown] Done."
+    mkdir -p /backup
+
+    WORLD_DIR=$(dirname "$(find /data -type f -name "level.dat" | head -n 1)")
+
+    echo "[shutdown] World dir detected: $WORLD_DIR"
+
+    mkdir -p /backup
+
+    tar -czf /backup/world.tar.gz -C "$WORLD_DIR" .
+
+    echo "[shutdown] Backup complete"
 
     exit 0
 }

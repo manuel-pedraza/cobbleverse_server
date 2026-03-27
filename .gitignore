@@ -3,3 +3,5 @@
 data
 modpack
 !modpack/.gitignore
+backup
+!backup/.gitignore

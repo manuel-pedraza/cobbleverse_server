@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-export TZ="${TZ:-UTC}"
+export TZ="${TZ}"
 
 # Current time (epoch)
 now=$(date +%s)
